@@ -3,7 +3,8 @@ const http= require('http');
 const morgan= require('morgan');
 const bodyParser= require('body-parser');
 const dishRouter = require('./routes/dish-router');
-	
+const promoRouter = require('./routes/promo-router');
+const leaderRouter = require('./routes/leader-router');
 const hostname = 'localhost';
 const port = 3000;
 
@@ -15,24 +16,9 @@ app.use(bodyParser.json());
 
 
 app.use('/dishes',dishRouter );
-app.get('/dishes/:dishId',(req, res, next)=>{
-	res.end("will send dish: "+req.params.dishId+" details");
-});
+app.use('/promotions', promoRouter);
+app.use('/leaders', leaderRouter);
 
-app.post('/dishes/:dishId',(req, res, next)=> {
-	res.statusCode=405;
-	res.end('POST not supported on /dishes/'+req.params.dishId);
-});
-
-app.put('/dishes/:dishId',(req, res, next)=> {
-	res.write('Updating the dish: '+req.params.dishId+ '\n');
-	res.end('Will update the dish: '+req.body.name+ ' with details '+req.body.description);
-	
-});
-
-app.delete('/dishes/:dishId',(req, res, next)=> {
-	res.end('Deleting dish: '+req.params.dishId);
-});
 
 app.use((req, res, next) => {
 	res.statusCode = 200;
